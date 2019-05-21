@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    #canvas {
+
+      background: #ddd;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas"></canvas>
+  <script>
+    // const canvas = document.getElementById('canvas')
+    // const ctx = canvas.getContext('2d')
+    // ctx.beginPath()
+    // ctx.moveTo(10, 10)
+    // ctx.lineTo(10, 50)
+    // ctx.lineTo(50, 50)
+    // ctx.lineTo(50, 10)
+    // ctx.fillStyle = 'black'
+    // ctx.fill()
+    // ctx.closePath()
+    // canvas.addEventListener('click', function (e) {
+    //   const canvasInfo = canvas.getBoundingClientRect()
+    //   console.log(ctx.isPointInPath(e.clientX - canvasInfo.left, e.clientY - canvasInfo.top))
+    // })
+
+
+    // const canvas = document.getElementById('canvas')
+    // const ctx = canvas.getContext('2d')
+    // ctx.beginPath()  
+    // ctx.moveTo(10, 10)  
+    // ctx.lineTo(10, 50)  
+    // ctx.lineTo(50, 50)  
+    // ctx.lineTo(50, 10)  
+    // ctx.fillStyle= 'black'  
+    // ctx.fill()  
+    // ctx.closePath()  
+    // ctx.beginPath()  
+    // ctx.moveTo(100, 100)  
+    // ctx.lineTo(100, 150)  
+    // ctx.lineTo(150, 150)  
+    // ctx.lineTo(150, 100)  
+    // ctx.fillStyle= 'red'  
+    // ctx.fill()  
+    // ctx.closePath()  
+    // canvas.addEventListener('click', function (e) {    
+    //   const canvasInfo = canvas.getBoundingClientRect()    
+    //   console.log(ctx.isPointInPath(e.clientX - canvasInfo.left, e.clientY - canvasInfo.top))  
+    // })
+
+    // const canvas = document.getElementById('canvas')
+    // const ctx = canvas.getContext('2d')
+    // let drawArray = []
+    // function draw1() {
+    //   ctx.beginPath()
+    //   ctx.moveTo(10, 10)
+    //   ctx.lineTo(10, 50)
+    //   ctx.lineTo(50, 50)
+    //   ctx.lineTo(50, 10)
+    //   ctx.fillStyle = 'black'
+    //   ctx.fill()
+    // }
+    // function draw2() {
+    //   ctx.beginPath()
+    //   ctx.moveTo(100, 100)
+    //   ctx.lineTo(100, 150)
+    //   ctx.lineTo(150, 150)
+    //   ctx.lineTo(150, 100)
+    //   ctx.fillStyle = 'red'
+    //   ctx.fill()
+    //   ctx.closePath()
+    // }
+    // drawArray.push(draw1, draw2)
+    // drawArray.forEach(it => { it() })
+    // canvas.addEventListener('click', function (e) {
+    //   ctx.clearRect(0, 0, 400, 750)
+    //   const canvasInfo = canvas.getBoundingClientRect()
+    //   drawArray.forEach(it => {
+    //     it()
+    //     console.log(ctx.isPointInPath(e.clientX - canvasInfo.left, e.clientY - canvasInfo.top))
+    //   })
+    // })
+
+
+    const canvas = document.getElementById('canvas')
+    const ctx = canvas.getContext('2d')
+    const path1 = new Path2D();
+    path1.rect(10, 10, 100, 100);
+    ctx.fill(path1)
+    const path2 = new Path2D();
+    path2.moveTo(220, 60);
+    path2.arc(170, 60, 50, 0, 2 * Math.PI);
+    ctx.stroke(path2)
+    canvas.addEventListener('click', function (e) {
+      console.log(ctx.isPointInPath(path1, e.clientX, e.clientY))
+      console.log(ctx.isPointInPath(path2, e.clientX, e.clientY))
+    })
+  </script>
+</body>
+
+</html>
