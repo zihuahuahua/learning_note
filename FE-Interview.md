@@ -69,3 +69,79 @@ function traversal(node) {
   }
 }
 ```
+
+#### 第 5 题：new操作符都做了什么
+
+四大步骤：
+
+1、创建一个空对象，并且 this 变量引用该对象 `let target = {}`;
+
+2、继承了函数的原型。 `target.proto = func.prototype`;
+
+3、属性和方法被加入到 this 引用的对象中。并执行了该函数func。 `func.call(target)`;
+
+4、新创建的对象由 this 所引用，并且最后隐式的返回 this 。// 如果func.call(target)返回的res是个对象或者function 就返回它本身.
+
+```js
+function new(func) {
+	lat target = {};
+	target.__proto__ = func.prototype;
+	let res = func.call(target);
+	if (typeof(res) == "object" || typeof(res) == "function") {
+		return res;
+	}
+	return target;
+}
+```
+
+#### 第 6 题：手写代码，简单实现call
+
+```js
+Function.prototype.call2 = function(context) {
+  var context = context || window; // 因为传进来的context有可能是null
+  context.fn = this;
+  var args = [];
+  for (var i = 1; i < arguments.length; i++) {
+    args.push("arguments[" + i + "]"); // 不这么做的话 字符串的引号会被自动去掉 变成了变量 导致报错
+  }
+  args = args.join(",");
+
+  var result = eval("context.fn(" + args + ")"); // 相当于执行了context.fn(arguments[1], arguments[2]);
+
+  delete context.fn;
+  return result; // 因为有可能this函数会有返回值return
+}
+```
+
+#### 第 7 题：手写代码，简单实现apply
+
+```js
+Function.prototype.apply2 = function(context, arr) {
+  var context = context || window; // 因为传进来的context有可能是null
+  context.fn = this;
+  var args = [];
+  var params = arr || [];
+  for (var i = 0; i < params.length; i++) {
+    args.push("params[" + i + "]"); // 不这么做的话 字符串的引号会被自动去掉 变成了变量 导致报错
+  }
+  args = args.join(",");
+
+  var result = eval("context.fn(" + args + ")"); // 相当于执行了context.fn(arguments[1], arguments[2]);
+
+  delete context.fn;
+  return result; // 因为有可能this函数会有返回值return
+}
+```
+
+#### 第 8 题：手写代码，简单实现bind
+
+```js
+Function.prototype.bind2 = function(context) {
+  var _this = this;
+  var argsParent = Array.prototype.slice.call(arguments, 1);
+  return function() {
+    var args = argsParent.concat(Array.prototype.slice.call(arguments)); //转化成数组
+    _this.apply(context, args);
+  };
+}
+```
