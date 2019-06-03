@@ -451,3 +451,158 @@ const obj = { a: 0, b: 1, c: 2 };
 const { a, b = 2, d = 3 } = obj;
 // a b d => 0 1 3
 ```
+
+
+
+##### Function Skill
+
+>函数自执行
+```js
+const Func = function() {}(); // 常用
+
+(function() {})(); // 常用
+(function() {}()); // 常用
+[function() {}()];
+
++ function() {}();
+- function() {}();
+~ function() {}();
+! function() {}();
+
+new function() {};
+new function() {}();
+void function() {}();
+typeof function() {}();
+delete function() {}();
+
+1, function() {}();
+1 ^ function() {}();
+1 > function() {}();
+```
+
+>隐式返回值：只能用于单语句返回值箭头函数，如果返回值是对象必须使用()包住
+```js
+const Func = function(name) {
+    return "I Love " + name;
+};
+// 换成
+const Func = name => "I Love " + name;
+```
+
+>一次性函数：适用于运行一些只需执行一次的初始化代码
+```js
+function Func() {
+    console.log("x");
+    Func = function() {
+        console.log("y");
+    }
+}
+```
+
+>惰性载入函数：函数内判断分支较多较复杂时可大大节约资源开销
+```js
+function Func() {
+    if (a === b) {
+        console.log("x");
+    } else {
+        console.log("y");
+    }
+}
+// 换成
+function Func() {
+    if (a === b) {
+        Func = function() {
+            console.log("x");
+        }
+    } else {
+        Func = function() {
+            console.log("y");
+        }
+    }
+    return Func();
+}
+```
+
+>检测非空参数
+```js
+function IsRequired() {
+    throw new Error("param is required");
+}
+function Func(name = IsRequired()) {
+    console.log("I Love " + name);
+}
+Func(); // "param is required"
+Func("雅君妹纸"); // "I Love 雅君妹纸"
+```
+
+>字符串创建函数
+```js
+const Func = new Function("name", "console.log(\"I Love \" + name)");
+```
+
+>优雅处理错误信息
+```js
+try {
+    Func();
+} catch (e) {
+    location.href = "https://stackoverflow.com/search?q=[js]+" + e.message;
+}
+```
+
+>优雅处理Async/Await参数
+```js
+function AsyncTo(promise) {
+    return promise.then(data => [null, data]).catch(err => [err]);
+}
+const [err, res] = await AsyncTo(Func());
+```
+
+>优雅处理多个函数返回值
+```js
+function Func() {
+    return Promise.all([
+        fetch("/user"),
+        fetch("/comment")
+    ]);
+}
+const [user, comment] = await Func(); // 需在async包围下使用
+```
+
+
+
+##### DOM Skill
+
+
+>显示全部DOM边框：调试页面元素边界时使用
+```js
+[].forEach.call($$("*"), dom => {
+    dom.style.outline = "1px solid #" + (~~(Math.random() * (1 << 24))).toString(16);
+});
+```
+
+>自适应页面：页面基于一张设计图但需做多款机型自适应，元素尺寸使用rem进行设置
+```js
+function AutoResponse(width = 750) {
+    const target = document.documentElement;
+    target.clientWidth >= 600
+        ? (target.style.fontSize = "80px")
+        : (target.style.fontSize = target.clientWidth / width * 100 + "px");
+}
+```
+
+>过滤XSS
+```js
+function FilterXss(content) {
+    let elem = document.createElement("div");
+    elem.innerText = content;
+    const result = elem.innerHTML;
+    elem = null;
+    return result;
+}
+```
+
+>存取LocalStorage：反序列化取，序列化存
+```js
+const love = JSON.parse(localStorage.getItem("love"));
+localStorage.setItem("love", JSON.stringify("I Love 雅君妹纸"));
+```
