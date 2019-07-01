@@ -17,3 +17,14 @@ function flat(arr) {
   },[])
 }
 console.log(flat(arr2))
+
+
+// 【小技巧】四行代码获取地址栏参数😘
+const url = 'http://www.baidu.com?key=1&key2=2'
+
+function getUrlParams(url,key){
+  let oUrl = new URL(url)
+  return oUrl.searchParams(key)
+
+}
+getUrlParams(url,'key') // 1
